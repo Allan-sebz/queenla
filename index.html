@@ -42,6 +42,7 @@ body{
   overflow-x:hidden;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 #petals{position:fixed;inset:0;pointer-events:none;z-index:0}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
 .stage{position:relative;z-index:1;max-width:520px;margin:0 auto;min-height:100%;display:flex;align-items:center;justify-content:center}
@@ -462,6 +463,9 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
   addEventListener('resize', () => { if(!$('#s-game').hidden){ sizeGame(); drawGame(); } });
   function moveBag(clientX){ const r = gc.getBoundingClientRect(); bagX = Math.max(30, Math.min(W-30, clientX - r.left)); }
   gc.addEventListener('pointermove', e => moveBag(e.clientX));
+  const touchMove = e => { if(!running) return; e.preventDefault(); moveBag(e.touches[0].clientX); };
+  box.addEventListener('touchstart', touchMove, {passive:false});
+  box.addEventListener('touchmove', touchMove, {passive:false});
   gc.addEventListener('pointerdown', e => { moveBag(e.clientX); gc.setPointerCapture && gc.setPointerCapture(e.pointerId); });
   addEventListener('keydown', e => {
     if(!running) return;
