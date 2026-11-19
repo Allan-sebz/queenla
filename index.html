@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fbe4ec">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="For Queenla 💌">
+<meta property="og:description" content="Someone made this just for you. Tap to open.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+<title>For Queenla</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,600&family=Nunito:wght@400;600;800&display=swap">
+<style>
+body{margin:0}
+/* Layout: one centered "stage" card that swaps scenes like pages of a letter; a single soft-pink world (deliberately single-theme). */
+:root{
+  --blush:#fbe4ec;
+  --petal:#f6c3d4;
+  --rose:#d93d74;
+  --rose-deep:#b02a5c;
+  --plum:#4a1832;
+  --plum-soft:#7d4a63;
+  --paper:#fff8fa;
+  --gold:#d6a03a;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{
+  background:radial-gradient(120% 80% at 50% 0%, #fff0f5 0%, var(--blush) 55%, #f8d3e0 100%) fixed, var(--blush);
+  color:var(--plum);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:24px;
+  box-sizing:border-box;
+  overflow-x:hidden;
+}
+*{box-sizing:border-box}
+#petals{position:fixed;inset:0;pointer-events:none;z-index:0}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.stage{position:relative;z-index:1;max-width:520px;margin:0 auto;min-height:100%;display:flex;align-items:center;justify-content:center}
+.scene{width:100%;animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:.0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.card{
+  background:var(--paper);
+  border-radius:28px;
+  padding:32px 24px;
+  box-shadow:0 1px 0 #fff inset, 0 24px 60px -24px rgba(176,42,92,.35), 0 2px 8px rgba(74,24,50,.06);
+  text-align:center;
+}
+h1,h2{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,8vw,2.8rem)}
+h2{font-size:clamp(1.45rem,6vw,1.9rem)}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--rose)}
+.lede{color:var(--plum-soft);margin:12px auto 0;max-width:36ch}
+.stack{display:flex;flex-direction:column;gap:14px;align-items:center}
+button{font:inherit;cursor:pointer;border:0;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.btn{
+  background:var(--rose);color:#fff;font-weight:800;
+  padding:14px 26px;border-radius:999px;font-size:1.05rem;
+  box-shadow:0 8px 20px -8px rgba(217,61,116,.7);
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), background .2s;
+}
+.btn:hover{background:var(--rose-deep)}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:#fff;color:var(--plum);box-shadow:0 0 0 2px var(--petal) inset}
+
+/* Envelope */
+.envelope-wrap{display:flex;flex-direction:column;align-items:center;gap:22px}
+.envelope{position:relative;width:min(300px,82vw);aspect-ratio:3/2;max-width:100%;background:none;padding:0;filter:drop-shadow(0 22px 30px rgba(176,42,92,.28))}
+.env-body{position:absolute;inset:0;background:#f4a9c1;border-radius:14px}
+.env-front{position:absolute;inset:0;border-radius:14px;overflow:hidden}
+.env-front::before,.env-front::after{content:"";position:absolute;bottom:0;width:60%;height:100%;background:#f7b9cd}
+.env-front::before{left:0;clip-path:polygon(0 0,100% 100%,0 100%)}
+.env-front::after{right:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.env-flap{position:absolute;left:0;right:0;top:0;height:62%;background:#ee94b2;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .7s ease;border-radius:14px 14px 0 0;z-index:3}
+.env-letter{position:absolute;left:8%;right:8%;top:10%;bottom:8%;background:var(--paper);border-radius:8px;z-index:1;transition:transform .8s .35s cubic-bezier(.2,.8,.2,1);display:grid;place-items:center;font-family:var(--display);font-style:italic;color:var(--rose);font-size:1.2rem}
+.seal{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:var(--rose);display:grid;place-items:center;z-index:4;box-shadow:0 4px 10px rgba(0,0,0,.18);transition:opacity .3s}
+.seal svg{width:28px;height:28px}
+.envelope.open .env-flap{transform:rotateX(180deg);z-index:0}
+.envelope.open .seal{opacity:0}
+.envelope.open .env-letter{transform:translateY(-55%)}
+.env-name{font-family:var(--display);font-size:clamp(2.2rem,10vw,3rem);font-weight:700;color:var(--plum);line-height:1}
+.env-name em{font-weight:400;color:var(--rose)}
+.hint{font-size:.9rem;color:var(--plum-soft);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+
+/* Crown */
+.crown{width:64px;height:auto;display:block;margin:0 auto 10px}
+
+/* Quiz */
+.progress{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.progress span{width:26px;height:6px;border-radius:6px;background:var(--petal)}
+.progress span.on{background:var(--rose)}
+.arena{position:relative;height:230px;margin-top:18px;touch-action:manipulation}
+.arena .yes{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--grow,1));transition:transform .35s cubic-bezier(.2,.8,.2,1);white-space:nowrap;z-index:2}
+.arena .no{position:absolute;white-space:nowrap;transition:left .28s cubic-bezier(.2,.8,.2,1), top .28s cubic-bezier(.2,.8,.2,1), transform .28s, opacity .3s;z-index:3}
+.tease{min-height:1.5em;margin-top:8px;font-weight:700;color:var(--rose);font-size:.95rem}
+
+/* Jar */
+.jar-btn{background:none;padding:0;display:block;margin:18px auto 6px;transition:transform .2s}
+.jar-btn:active{transform:scale(.96) rotate(-2deg)}
+.jar-btn.shake{animation:shake .45s}
+@keyframes shake{25%{transform:rotate(-6deg)}50%{transform:rotate(5deg)}75%{transform:rotate(-3deg)}}
+.jar-svg{width:180px;max-width:100%;height:auto}
+.note{
+  margin:14px auto 0;max-width:380px;background:#fffdf5;border-radius:6px;padding:20px 20px 18px;
+  box-shadow:0 10px 24px -12px rgba(74,24,50,.35);transform:rotate(-1.2deg);text-align:left;position:relative;
+  animation:unfold .5s cubic-bezier(.2,.8,.2,1) both;
+}
+.note::before{content:"";position:absolute;top:-9px;left:50%;width:70px;height:18px;transform:translateX(-50%) rotate(2deg);background:rgba(246,195,212,.85);border-radius:2px}
+@keyframes unfold{from{opacity:0;transform:translateY(-30px) rotate(6deg) scale(.7)}to{opacity:1;transform:rotate(-1.2deg)}}
+.note .num{font-family:var(--display);font-style:italic;color:var(--rose);font-size:.95rem}
+.note p{margin:6px 0 0;font-family:var(--display);font-size:1.15rem;line-height:1.4;color:var(--plum)}
+.count{font-size:.85rem;color:var(--plum-soft);margin-top:10px;font-variant-numeric:tabular-nums}
+
+/* Game */
+.game-box{position:relative;margin-top:16px;border-radius:20px;overflow:hidden;background:linear-gradient(#fff3f7,#fbdbe6);box-shadow:0 0 0 2px var(--petal) inset;height:min(56vh,380px);touch-action:none}
+#game{display:block;width:100%;height:100%}
+.meter{height:12px;border-radius:12px;background:var(--petal);overflow:hidden;margin-top:14px}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--gold));transition:width .25s}
+.game-cta{position:absolute;inset:0;display:grid;place-items:center;background:rgba(255,248,250,.82);backdrop-filter:blur(2px)}
+
+/* Letter */
+.letter{text-align:left;padding:34px 26px}
+.letter p{font-family:var(--display);font-size:1.12rem;line-height:1.6;margin:0 0 14px}
+.letter .greet{font-size:1.5rem;font-style:italic;color:var(--rose)}
+.letter .sign{font-style:italic;font-size:1.35rem;text-align:right;margin-top:20px;color:var(--rose-deep)}
+.letter .promise{font-weight:700}
+.footer-note{text-align:center;color:var(--plum-soft);font-size:.85rem;margin-top:18px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+
+</head>
+<body>
+<canvas id="petals" aria-hidden="true"></canvas>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<main class="stage">
+
+  <!-- 0. Envelope -->
+  <section class="scene" id="s-envelope">
+    <div class="envelope-wrap">
+      <div class="eyebrow">A little something, for</div>
+      <div class="env-name">Queen<em>la</em></div>
+      <button class="envelope" id="envelope" aria-label="Open the envelope">
+        <span class="env-body"></span>
+        <span class="env-letter">for you, always</span>
+        <span class="env-front"></span>
+        <span class="env-flap"></span>
+        <span class="seal" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path fill="#fff" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.8 6.6 4.8c2.1 0 3.6 1.2 5.4 3.1 1.8-1.9 3.3-3.1 5.4-3.1 3.6 0 5.7 3.6 4.2 7C19.5 16.4 12 21 12 21z"/></svg>
+        </span>
+      </button>
+      <div class="hint">Tap the envelope to open it</div>
+    </div>
+  </section>
+
+  <!-- 1. Intro -->
+  <section class="scene" id="s-intro" hidden>
+    <div class="card stack">
+      <svg class="crown" viewBox="0 0 64 44" aria-hidden="true"><path d="M4 38 2 10l16 12L32 2l14 20 16-12-2 28z" fill="#d6a03a"/><rect x="4" y="36" width="56" height="7" rx="2" fill="#b98424"/><circle cx="32" cy="22" r="4" fill="#d93d74"/><circle cx="17" cy="27" r="3" fill="#fff8fa"/><circle cx="47" cy="27" r="3" fill="#fff8fa"/></svg>
+      <div class="eyebrow">Hey Queenla</div>
+      <h1>Allan made this just for you.</h1>
+      <p class="lede">There's a short quiz first. Answer honestly. Well, some answers are not allowed, so... answer correctly. 😌</p>
+      <button class="btn" id="start-quiz">I'm ready 💗</button>
+    </div>
+  </section>
+
+  <!-- 2. Quiz -->
+  <section class="scene" id="s-quiz" hidden>
+    <div class="card">
+      <div class="progress" id="q-progress" aria-hidden="true"></div>
+      <div class="eyebrow" id="q-label">Question 1</div>
+      <h2 id="q-text" style="margin-top:8px"></h2>
+      <div class="arena" id="arena">
+        <button class="btn yes" id="q-yes"></button>
+        <button class="btn ghost no" id="q-no"></button>
+      </div>
+      <div class="tease" id="q-tease" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 3. Jar -->
+  <section class="scene" id="s-jar" hidden>
+    <div class="card">
+      <div class="eyebrow">The jar of reasons</div>
+      <h2 style="margin-top:8px">Why you mean the world to me</h2>
+      <p class="lede">Tap the jar to pull out a note. There are 12 in there.</p>
+      <button class="jar-btn" id="jar" aria-label="Pull a note from the jar">
+        <svg class="jar-svg" viewBox="0 0 180 210" aria-hidden="true">
+          <rect x="52" y="6" width="76" height="22" rx="6" fill="#d6a03a"/>
+          <rect x="58" y="26" width="64" height="12" rx="3" fill="#f6c3d4"/>
+          <path d="M44 40h92c12 0 20 10 20 22v118c0 16-12 26-28 26H52c-16 0-28-10-28-26V62c0-12 8-22 20-22z" fill="#ffffff" fill-opacity=".75" stroke="#f6c3d4" stroke-width="4"/>
+          <g id="jar-notes">
+            <rect x="46" y="150" width="34" height="22" rx="3" fill="#fbe4ec" transform="rotate(-12 63 161)"/>
+            <rect x="84" y="156" width="34" height="22" rx="3" fill="#fff4cf" transform="rotate(9 101 167)"/>
+            <rect x="110" y="140" width="34" height="22" rx="3" fill="#f6c3d4" transform="rotate(-6 127 151)"/>
+            <rect x="60" y="122" width="34" height="22" rx="3" fill="#fff4cf" transform="rotate(14 77 133)"/>
+            <rect x="96" y="112" width="34" height="22" rx="3" fill="#fbe4ec" transform="rotate(-16 113 123)"/>
+            <rect x="50" y="94" width="34" height="22" rx="3" fill="#f6c3d4" transform="rotate(7 67 105)"/>
+            <rect x="92" y="84" width="34" height="22" rx="3" fill="#fff4cf" transform="rotate(-9 109 95)"/>
+          </g>
+          <path d="M40 64c0-8 4-14 10-16" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".9"/>
+        </svg>
+      </button>
+      <div id="note-slot"></div>
+      <div class="count" id="note-count">0 of 12 opened</div>
+      <div id="jar-next" hidden style="margin-top:18px">
+        <button class="btn" id="to-game">One more thing →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Game -->
+  <section class="scene" id="s-game" hidden>
+    <div class="card">
+      <div class="eyebrow">A tiny game</div>
+      <h2 style="margin-top:8px">Catch the flowers &amp; the money</h2>
+      <p class="lede">The two things you love most (after Allan, obviously). Move the bag left and right. Catch 15 to unlock your letter.</p>
+      <div class="game-box" id="game-box">
+        <canvas id="game"></canvas>
+        <div class="game-cta" id="game-cta"><button class="btn" id="game-start">Start 🌸💵</button></div>
+      </div>
+      <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+      <div class="count" id="game-count" aria-live="polite">0 / 15 caught</div>
+    </div>
+  </section>
+
+  <!-- 5. Letter -->
+  <section class="scene" id="s-letter" hidden>
+    <div class="card letter">
+      <svg class="crown" viewBox="0 0 64 44" aria-hidden="true"><path d="M4 38 2 10l16 12L32 2l14 20 16-12-2 28z" fill="#d6a03a"/><rect x="4" y="36" width="56" height="7" rx="2" fill="#b98424"/><circle cx="32" cy="22" r="4" fill="#d93d74"/><circle cx="17" cy="27" r="3" fill="#fff8fa"/><circle cx="47" cy="27" r="3" fill="#fff8fa"/></svg>
+      <p class="greet">My dear Queenla,</p>
+      <p>I love you so much. I'm so happy you came into my life, and I thank God for you all the time.</p>
+      <p>You've supported me, carried me when I was down, taken me places I'd never been, and trusted me with the things that weigh on your heart. Being your person is one of my favourite things in this world.</p>
+      <p>And if there's a next life, I'd choose you again. And again. Over and over.</p>
+      <p>I'm not that rich, and I can't meet all your needs. But in my little capacity, I'll always do whatever I can, forever, to make you happy.</p>
+      <p class="promise">Friends forever. That's a promise. 💗</p>
+      <p class="sign">— Allan</p>
+    </div>
+    <div class="footer-note">
+      <button class="btn ghost" id="replay">Play it again</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function show(id){
+    document.querySelectorAll('.scene').forEach(s => s.hidden = s.id !== id);
+    window.scrollTo({top:0, behavior: reduced ? 'auto' : 'smooth'});
+  }
+
+  /* ---------- Ambient petals ---------- */
+  const pc = $('#petals'), px = pc.getContext('2d');
+  let petals = [];
+  function sizePetals(){ pc.width = innerWidth * devicePixelRatio; pc.height = innerHeight * devicePixelRatio; px.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+  sizePetals(); addEventListener('resize', sizePetals);
+  for(let i=0;i<18;i++) petals.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:5+Math.random()*7,s:.3+Math.random()*.7,a:Math.random()*6,w:.01+Math.random()*.02});
+  function drawPetal(ctx,x,y,r,rot,color){
+    ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.fillStyle=color;
+    ctx.beginPath(); ctx.ellipse(0,0,r,r*.6,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+  }
+  function petalLoop(){
+    px.clearRect(0,0,innerWidth,innerHeight);
+    for(const p of petals){
+      p.y += p.s; p.a += p.w; p.x += Math.sin(p.a)*.5;
+      if(p.y > innerHeight+20){ p.y = -20; p.x = Math.random()*innerWidth; }
+      drawPetal(px,p.x,p.y,p.r,p.a,'rgba(217,61,116,.16)');
+    }
+    requestAnimationFrame(petalLoop);
+  }
+  if(!reduced) petalLoop();
+
+  /* ---------- Confetti ---------- */
+  const cc = $('#confetti'), cx = cc.getContext('2d');
+  let bits = [], confettiOn = false;
+  function sizeConf(){ cc.width = innerWidth*devicePixelRatio; cc.height = innerHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+  sizeConf(); addEventListener('resize', sizeConf);
+  function heart(ctx,x,y,s,rot,color){
+    ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.scale(s/16,s/16); ctx.fillStyle=color;
+    ctx.beginPath(); ctx.moveTo(0,6); ctx.bezierCurveTo(-14,-4,-6,-16,0,-7); ctx.bezierCurveTo(6,-16,14,-4,0,6); ctx.fill(); ctx.restore();
+  }
+  function burst(n){
+    if(reduced) return;
+    const colors=['#d93d74','#f6c3d4','#d6a03a','#ee94b2','#b02a5c','#ffffff'];
+    for(let i=0;i<n;i++) bits.push({x:innerWidth/2+(Math.random()-.5)*120,y:innerHeight*.35,vx:(Math.random()-.5)*12,vy:-Math.random()*12-4,r:Math.random()*6,vr:(Math.random()-.5)*.3,s:8+Math.random()*10,c:colors[i%colors.length],h:Math.random()<.4,life:0});
+    if(!confettiOn){ confettiOn=true; confLoop(); }
+  }
+  function confLoop(){
+    cx.clearRect(0,0,innerWidth,innerHeight);
+    bits = bits.filter(b => b.y < innerHeight+40 && b.life < 400);
+    for(const b of bits){
+      b.vy += .25; b.vx *= .99; b.x += b.vx; b.y += b.vy; b.r += b.vr; b.life++;
+      if(b.h) heart(cx,b.x,b.y,b.s,b.r,b.c);
+      else { cx.save(); cx.translate(b.x,b.y); cx.rotate(b.r); cx.fillStyle=b.c; cx.fillRect(-b.s/2,-b.s/4,b.s,b.s/2); cx.restore(); }
+    }
+    if(bits.length) requestAnimationFrame(confLoop); else { confettiOn=false; cx.clearRect(0,0,innerWidth,innerHeight); }
+  }
+
+  /* ---------- Envelope ---------- */
+  $('#envelope').addEventListener('click', e => {
+    const env = e.currentTarget;
+    if(env.classList.contains('open')) return;
+    env.classList.add('open');
+    burst(60);
+    setTimeout(() => show('s-intro'), reduced ? 200 : 1500);
+  });
+  $('#start-quiz').addEventListener('click', () => { show('s-quiz'); loadQ(0); });
+
+  /* ---------- Quiz ---------- */
+  const questions = [
+    { q:"Are you the most amazing friend in the whole world?", yes:"Yes, obviously 👑", no:"No",
+      teases:["Hmm, that button seems shy.","It doesn't agree with you either.","Try harder, Queen 😜","That button knows the truth.","Okay, you're just stubborn now.","Just press Yes 🙄"],
+      done:"Correct. Allan says this is the easiest question ever." },
+    { q:"Who's the best driver you know?", yes:"Allan, obviously 🚗", no:"Not Allan",
+      teases:["That button failed its driving test.","It just swerved. Unlike Allan.","Smooth handling, see?","Allan drives better than that button.","Admit it 😌","The road is long. Just press the left one."],
+      done:"Thank you. Allan feels very respected right now. 😂" },
+    { q:"Will we be friends forever?", yes:"Forever & ever 💞", no:"No",
+      teases:["Wrong answer, try again.","That's not even an option.","Not allowed. Sorry. 💅","Forever is the only answer.","Okay, now you're just playing 😂","Click Forever, Queenla."],
+      done:"Forever it is. No take-backs." },
+    { q:"Do you know how much Allan appreciates you?", yes:"Yes 💗", no:"Not yet", catchable:true,
+      teases:[], done:"" }
+  ];
+  let qi = 0, attempts = 0;
+  const arena = $('#arena'), yesB = $('#q-yes'), noB = $('#q-no'), tease = $('#q-tease');
+
+  function renderProgress(){
+    $('#q-progress').innerHTML = questions.map((_,i)=>`<span class="${i<=qi?'on':''}"></span>`).join('');
+  }
+  function placeNoStart(){
+    const aw = arena.clientWidth, ah = arena.clientHeight;
+    noB.style.left = (aw/2 - noB.offsetWidth/2) + 'px';
+    noB.style.top = (ah/2 + 38) + 'px';
+    yesB.style.top = '34%';
+  }
+  function loadQ(i){
+    qi = i; attempts = 0;
+    const Q = questions[i];
+    renderProgress();
+    $('#q-label').textContent = 'Question ' + (i+1) + ' of ' + questions.length;
+    $('#q-text').textContent = Q.q;
+    yesB.textContent = Q.yes; noB.textContent = Q.no;
+    yesB.style.setProperty('--grow', 1);
+    noB.style.opacity = 1; noB.style.transform = '';
+    tease.textContent = '';
+    requestAnimationFrame(placeNoStart);
+  }
+  function runAway(ev){
+    const Q = questions[qi];
+    if(Q.catchable) return;
+    attempts++;
+    const aw = arena.clientWidth, ah = arena.clientHeight;
+    const bw = noB.offsetWidth, bh = noB.offsetHeight;
+    let px0 = aw/2, py0 = ah/2;
+    if(ev && ev.clientX != null){ const r = arena.getBoundingClientRect(); px0 = ev.clientX - r.left; py0 = ev.clientY - r.top; }
+    let x, y, tries = 0;
+    do {
+      x = Math.random()*(aw - bw);
+      y = Math.random()*(ah - bh);
+      tries++;
+    } while (tries < 30 && Math.hypot(x+bw/2-px0, y+bh/2-py0) < 120);
+    noB.style.left = x + 'px'; noB.style.top = y + 'px';
+    const grow = Math.min(1 + attempts*0.09, 1.7);
+    yesB.style.setProperty('--grow', grow);
+    if(attempts > 1) tease.textContent = Q.teases[Math.min(attempts-2, Q.teases.length-1)];
+    if(attempts >= 9){ noB.style.transform = 'scale(.7)'; }
+    if(attempts >= 13){ noB.style.opacity = .35; }
+  }
+  noB.addEventListener('pointerenter', e => { if(e.pointerType === 'mouse') runAway(e); });
+  noB.addEventListener('pointerdown', e => { if(!questions[qi].catchable){ e.preventDefault(); runAway(e); } });
+  noB.addEventListener('touchstart', e => { if(!questions[qi].catchable){ e.preventDefault(); const t=e.touches[0]; runAway({clientX:t.clientX, clientY:t.clientY}); } }, {passive:false});
+  noB.addEventListener('click', e => {
+    const Q = questions[qi];
+    if(Q.catchable){
+      noB.disabled = yesB.disabled = true;
+      tease.textContent = "Not yet? Then let me show you. 💌";
+      setTimeout(() => { noB.disabled = yesB.disabled = false; show('s-jar'); }, 1300);
+      return;
+    }
+    // caught it somehow (keyboard etc.)
+    tease.textContent = "Nice try. That button is broken. 💅";
+    runAway(null);
+  });
+  yesB.addEventListener('click', () => {
+    const Q = questions[qi];
+    burst(40);
+    noB.disabled = yesB.disabled = true;
+    tease.textContent = Q.catchable ? "Good. But let me remind you anyway. 💌" : Q.done;
+    setTimeout(() => {
+      noB.disabled = yesB.disabled = false;
+      if(qi < questions.length-1) loadQ(qi+1); else show('s-jar');
+    }, 1500);
+  });
+  addEventListener('resize', () => { if(!$('#s-quiz').hidden) placeNoStart(); });
+
+  /* ---------- Jar of reasons ---------- */
+  const reasons = [
+    "You've taken me places I'd never been before. Some on the map, some in life.",
+    "My birthday, when I was completely broke, you sent me $100. You have no idea how happy that made me. I'll never forget it.",
+    "When you need a ride, company, or someone to run errands with, I'm your first call. I love being that person.",
+    "You tell me your problems and trust me with your heart. That trust means everything to me.",
+    "Even when we drifted apart for a while, we found our way back. That's how I know this friendship is real.",
+    "When I'm in trouble, you help me, and you never make me feel small for needing it.",
+    "You make me feel special, so I'll spend forever trying to make you feel the same.",
+    "You complain about my driving, but you still get in the car every time. That's love. 🚗",
+    "You love food, and honestly, that's a personality I respect. 🍕",
+    "One day I'm going to finally say hi to your mom. Pray for me. 😅",
+    "I'm praying your campus change goes through so we stay close. And if it doesn't, near or far, you're stuck with me.",
+    "I thank God for you. Every single time."
+  ];
+  let opened = 0;
+  const order = reasons.map((_,i)=>i);
+  $('#jar').addEventListener('click', e => {
+    const jar = e.currentTarget;
+    jar.classList.remove('shake'); void jar.offsetWidth; jar.classList.add('shake');
+    const idx = order[opened % order.length];
+    $('#note-slot').innerHTML = `<div class="note"><div class="num">Reason #${idx+1}</div><p></p></div>`;
+    $('#note-slot p').textContent = reasons[idx];
+    if(opened < reasons.length){
+      opened++;
+      const notes = document.querySelectorAll('#jar-notes rect');
+      const hideCount = Math.round(opened / reasons.length * notes.length);
+      notes.forEach((n,i)=> n.style.opacity = i >= notes.length - hideCount ? .15 : 1);
+    }
+    $('#note-count').textContent = opened >= reasons.length ? 'All 12 opened. Tap again to reread them. 💗' : opened + ' of 12 opened';
+    if(opened >= 4) $('#jar-next').hidden = false;
+    if(opened === reasons.length) burst(50);
+    if(opened > reasons.length - 1) order.push(order.shift());
+  });
+  $('#to-game').addEventListener('click', () => { show('s-game'); setupGame(); });
+
+  /* ---------- Catch game ---------- */
+  const gc = $('#game'), gx = gc.getContext('2d'), box = $('#game-box');
+  const GOAL = 15;
+  let W=0,H=0, bagX=0, items=[], caught=0, running=false, lastSpawn=0, floaters=[];
+  const goods = ['🌸','💵','🌷','💐','💵','🌹','💰'];
+  const treats = ['🍰','🍕'];
+  function sizeGame(){
+    W = box.clientWidth; H = box.clientHeight;
+    gc.width = W*devicePixelRatio; gc.height = H*devicePixelRatio;
+    gx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    if(!bagX) bagX = W/2;
+  }
+  function setupGame(){ requestAnimationFrame(()=>{ sizeGame(); drawGame(); }); }
+  addEventListener('resize', () => { if(!$('#s-game').hidden){ sizeGame(); drawGame(); } });
+  function moveBag(clientX){ const r = gc.getBoundingClientRect(); bagX = Math.max(30, Math.min(W-30, clientX - r.left)); }
+  gc.addEventListener('pointermove', e => moveBag(e.clientX));
+  gc.addEventListener('pointerdown', e => { moveBag(e.clientX); gc.setPointerCapture && gc.setPointerCapture(e.pointerId); });
+  addEventListener('keydown', e => {
+    if(!running) return;
+    if(e.key === 'ArrowLeft') bagX = Math.max(30, bagX-30);
+    if(e.key === 'ArrowRight') bagX = Math.min(W-30, bagX+30);
+  });
+  function drawBag(){
+    const y = H - 46;
+    gx.save(); gx.translate(bagX, y);
+    gx.fillStyle = '#d93d74';
+    gx.beginPath(); gx.moveTo(-34,0); gx.lineTo(34,0); gx.lineTo(28,36); gx.quadraticCurveTo(0,42,-28,36); gx.closePath(); gx.fill();
+    gx.strokeStyle = '#d6a03a'; gx.lineWidth = 4;
+    gx.beginPath(); gx.arc(0,0,18,Math.PI,0); gx.stroke();
+    gx.fillStyle = '#fff8fa'; gx.font = '700 12px Nunito, sans-serif'; gx.textAlign='center';
+    gx.fillText('QUEEN', 0, 23);
+    gx.restore();
+  }
+  function drawGame(){
+    gx.clearRect(0,0,W,H);
+    gx.textAlign='center'; gx.textBaseline='middle';
+    for(const it of items){ gx.font = it.size+'px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif'; gx.save(); gx.translate(it.x,it.y); gx.rotate(it.rot); gx.fillText(it.e,0,0); gx.restore(); }
+    for(const f of floaters){ gx.globalAlpha = Math.max(0,1-f.t/40); gx.fillStyle='#d93d74'; gx.font='800 16px Nunito, sans-serif'; gx.fillText(f.txt,f.x,f.y-f.t); gx.globalAlpha=1; }
+    drawBag();
+  }
+  function gameLoop(t){
+    if(!running) return;
+    const rate = Math.max(420, 900 - caught*25);
+    if(t - lastSpawn > rate){
+      lastSpawn = t;
+      const isTreat = Math.random() < .18;
+      items.push({x:24+Math.random()*(W-48), y:-20, vy:1.8+Math.random()*1.6+caught*.06, e: isTreat ? treats[Math.random()*treats.length|0] : goods[Math.random()*goods.length|0], size:30, rot:(Math.random()-.5)*.6, vr:(Math.random()-.5)*.04});
+    }
+    const bagTop = H - 52;
+    items = items.filter(it => {
+      it.y += it.vy; it.rot += it.vr;
+      if(it.y > bagTop && it.y < bagTop+30 && Math.abs(it.x - bagX) < 42){
+        caught++;
+        floaters.push({x:it.x,y:bagTop,t:0,txt: it.e==='🍕'||it.e==='🍰' ? 'yum!' : '+1'});
+        updateMeter();
+        return false;
+      }
+      return it.y < H + 30;
+    });
+    floaters = floaters.filter(f => ++f.t < 40);
+    drawGame();
+    if(caught >= GOAL){ winGame(); return; }
+    requestAnimationFrame(gameLoop);
+  }
+  function updateMeter(){
+    $('#meter').style.width = Math.min(100, caught/GOAL*100) + '%';
+    $('#game-count').textContent = Math.min(caught,GOAL) + ' / ' + GOAL + ' caught';
+  }
+  function winGame(){
+    running = false; items = [];
+    drawGame();
+    burst(90);
+    $('#game-count').textContent = 'You did it! Your letter is unlocked 💌';
+    const cta = $('#game-cta'); cta.hidden = false;
+    cta.innerHTML = '<button class="btn" id="open-letter">Open my letter 💌</button>';
+    $('#open-letter').addEventListener('click', () => { show('s-letter'); setTimeout(()=>burst(120), 300); });
+  }
+  $('#game-start').addEventListener('click', () => {
+    sizeGame(); caught = 0; items = []; updateMeter();
+    $('#game-cta').hidden = true; running = true; lastSpawn = 0;
+    requestAnimationFrame(gameLoop);
+  });
+
+  /* ---------- Replay ---------- */
+  $('#replay').addEventListener('click', () => {
+    $('#envelope').classList.remove('open');
+    opened = 0; $('#note-slot').innerHTML=''; $('#note-count').textContent='0 of 12 opened'; $('#jar-next').hidden = true;
+    document.querySelectorAll('#jar-notes rect').forEach(n=>n.style.opacity=1);
+    const cta = $('#game-cta'); cta.hidden = false;
+    cta.innerHTML = '<button class="btn" id="game-start2">Start 🌸💵</button>';
+    $('#game-start2').addEventListener('click', () => { sizeGame(); caught=0; items=[]; updateMeter(); cta.hidden=true; running=true; lastSpawn=0; requestAnimationFrame(gameLoop); });
+    caught = 0; updateMeter();
+    show('s-envelope');
+  });
+})();
+</script>
+
+</body>
+</html>
